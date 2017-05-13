@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hans-CN">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            background: #C9C9C9;
+            text-align: center;
+        }
+
+        #start {
+            display: none;
+        }
+
+        #imgList {
+            display: none;
+        }
+
+        .content-container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .box {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<p>
+    <button id="start">开始服毒</button>
+</p>
+<div class="content-container">
+    <div class="box"><img src="img/1.jpeg" id="img" width="560"></div>
+    <div class="box">
+        <video id="videoPlayer" width="560" preload>
+            <source src="jljt.mp4" type="video/mp4"/>
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+<p id="times"></p>
+<div id="imgList"></div>
+<div>
+    <audio autoplay="autoplay" preload>
+        <source src="http://tts.baidu.com/text2audio?lan=zh&pid=101&ie=UTF-8&text=欢迎观看极乐净土&spd=3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+<script src="jq.js"></script>
+<script>
+    $(function () {
+        var picCount = 3400;
+        // 视频分钟数 / 图片张数， 其中的3为修正频率因子
+        var rate = (227 + 3) * 1000 / picCount;
+        // --------------------------------
+        var $start = $('#start');
+        var $img = $('#img');
+        var $imgList = $('#imgList');
+        var $times = $('#times');
+        var videoPlayer = document.getElementById('videoPlayer');
+        for (var j = 1; j <= picCount; j++) {
+            $imgList.append('<img src="img2/' + j + '.png"/>');
+        }
+        $start.show();
+        $start.on('click', function () {
+            $(this).hide();
+            videoPlayer.play();
+            var startTime = new Date().getTime();
+            var i = 1;
+            var interval = setInterval(function () {
+                if (i <= picCount) {
+                    $img.attr('src', 'img2/' + i + '.png');
+                    var passedTime = new Date().getTime() - startTime;
+                    $times.text(passedTime);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    $start.text('再次服毒');
+                    $start.show();
+                }
+            }, rate);
+        })
+    });
+</script>
+</body>
+</html>
